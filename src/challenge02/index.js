@@ -1,28 +1,20 @@
-const operators = {
-  '#': (op) => {
-    return op + 1
-  },
-  '@': (op) => {
-    return op - 1
-  },
-  '*': (op) => {
-    return op * op
-  },
-  '&': (op) => {
-    return op
-  }
-}
-
 function compile(code) {
   let value = 0
   let compiledCode = ''
+
+  const operators = {
+    '#': () => value++,
+    '@': () => value--,
+    '*': () => (value *= value),
+    '&': () => (compiledCode += value.toString())
+  }
+
   code.split('').forEach((char) => {
-    if (char === '&') compiledCode += value
-    else value = operators[char](value)
+    if (operators[char]) operators[char]()
   })
+
   return compiledCode
 }
-
 console.log(
   compile(
     '&###@&*&###@@##@##&######@@#####@#@#@#@##@@@@@@@@@@@@@@@*&&@@@@@@@@@####@@@@@@@@@#########&#&##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@##@@&'
